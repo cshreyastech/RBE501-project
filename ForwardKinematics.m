@@ -1,71 +1,73 @@
-% dhparams = [ 0 0 L 0;
-%             0 -pi/2 0 0;
-%            0 pi/2 0 0;
-%            0 -pi/2 L 0;
-%            0 pi/2 0 0;
-%            0 -pi/2 L 0;
-%            0 pi/2 0 0;
-%            0 -pi/2 L 0;
-%            0 pi/2 0 0;
-%            0 -pi/2 L 0;
-%            0 pi/2 0 0;
-%            0 -pi/2 L 0;
-%            0 pi/2 0 0;
-%            0 0 L 0;]
 
-function ForwardKinematics()
-t1= sym('t1');
-t2= sym('t2');
-t3= sym('t3');
-t4= sym('t4');
-t5= sym('t5');
-t6= sym('t6');
-t7= sym('t7');
-t8= sym('t8');
-t9= sym('t9');
-t10= sym('t10');
-t11= sym('t11');
-t12= sym('t12');
-t13= sym('t13');
-t14= sym('t14');
 
-L = sym('L');
+% function ForwardKinematics()
 
-% DH table
-A_1 = 0;     alpha1 = 0;             d1 = L;   theta1 = 0;
-A_2 = 0;     alpha2 = -sym(pi)/2;    d2 = 0;   theta2 = t1;
-A_3 = 0;     alpha3 = sym(pi)/2;     d3 = 0;   theta3 = t2;
-A_4 = 0;     alpha4 = -sym(pi)/2;    d4 = L;   theta4 = t3;
-A_5 = 0;     alpha5 = sym(pi)/2;     d5 = 0;   theta5 = t4;
-A_6 = 0;     alpha6 = -sym(pi)/2;    d6 = L;   theta6 = t5;
-A_7 = 0;     alpha7 = sym(pi)/2;     d7 = 0;   theta7 = t6;
-A_8 = 0;     alpha8 = -sym(pi)/2;    d8 = L;   theta8 = t7;
-A_9 = 0;     alpha9 = sym(pi)/2;     d9 = 0;   theta9 = t8;
-A_10 = 0;    alpha10 = -sym(pi)/2;   d10 = L;  theta10 = t9;
-A_11 = 0;    alpha11 = sym(pi)/2;    d11 = 0;  theta11 = t10;
-A_12 = 0;    alpha12 = -sym(pi)/2;   d12 = L;  theta12 = t11;
-A_13 = 0;    alpha13 = sym(pi)/2;    d13 = 0;  theta13 = t12;
-A_14 = 0;    alpha14 = 0;            d14 = L;  theta14 = t13;
+%theta position taken from simulink model
+%outputs 1988X1 table for each t(1-12) or dt(1-12)
+th1= t1;
+th2= t2;
+th3= t3;
+th4= t4;
+th5= t5;
+th6= t6;
+th7= t7;
+th8= t8;
+th9= t9;
+th10= t10;
+th11= t11;
+th12= t12;
 
-% Link Matrices
-A1 = dh(A_1, alpha1, d1, theta1);
-A2 = dh(A_2, alpha2, d2, theta2);
-A3 = dh(A_3, alpha3, d3, theta3);
-A4 = dh(A_4, alpha4, d4, theta4);
-A5 = dh(A_5, alpha5, d5, theta5);
-A6 = dh(A_6, alpha6, d6, theta6);
-A7 = dh(A_7, alpha7, d7, theta7);
-A8 = dh(A_8, alpha8, d8, theta8);
-A9 = dh(A_9, alpha9, d9, theta9);
-A10 = dh(A_10, alpha10, d10, theta10);
-A11 = dh(A_11, alpha11, d11, theta11);
-A12 = dh(A_12, alpha12, d12, theta12);
-A13 = dh(A_13, alpha13, d13, theta13);
-A14 = dh(A_14, alpha14, d14, theta14);
+d_t1= dt1;
+d_t2= dt2;
+d_t3= dt3;
+d_t4= dt4;
+d_t5= dt5;
+d_t6= dt6;
+d_t7= dt7;
+d_t8= dt8;
+d_t9= dt9;
+d_t10= dt10;
+d_t11= dt11;
+d_t12= dt12;
 
-%---------------------------------------------------------
-%homogeneuos transfom
+L = 10;
 
+% DH table constants
+A_1 = 0;     alpha1 = 0;             d1 = L;  
+A_2 = 0;     alpha2 = -sym(pi)/2;    d2 = 0;  
+A_3 = 0;     alpha3 = sym(pi)/2;     d3 = 0;   
+A_4 = 0;     alpha4 = -sym(pi)/2;    d4 = L;   
+A_5 = 0;     alpha5 = sym(pi)/2;     d5 = 0;   
+A_6 = 0;     alpha6 = -sym(pi)/2;    d6 = L;   
+A_7 = 0;     alpha7 = sym(pi)/2;     d7 = 0;   
+A_8 = 0;     alpha8 = -sym(pi)/2;    d8 = L;  
+A_9 = 0;     alpha9 = sym(pi)/2;     d9 = 0;   
+A_10 = 0;    alpha10 = -sym(pi)/2;   d10 = L; 
+A_11 = 0;    alpha11 = sym(pi)/2;    d11 = 0;  
+A_12 = 0;    alpha12 = -sym(pi)/2;   d12 = L; 
+A_13 = 0;    alpha13 = sym(pi)/2;    d13 = 0;  
+A_14 = 0;    alpha14 = 0;            d14 = L; 
+
+
+for i = 1:71:1988
+   % trasformations
+A1 = dh(A_1, alpha1, d1, 0);
+A2 = dh(A_2, alpha2, d2, th1(i));
+A3 = dh(A_3, alpha3, d3, th2(i));
+A4 = dh(A_4, alpha4, d4, th3(i));
+A5 = dh(A_5, alpha5, d5, th4(i));
+A6 = dh(A_6, alpha6, d6, th5(i));
+A7 = dh(A_7, alpha7, d7, th6(i));
+A8 = dh(A_8, alpha8, d8, th7(i));
+A9 = dh(A_9, alpha9, d9, th8(i));
+A10 = dh(A_10, alpha10, d10, th9(i));
+A11 = dh(A_11, alpha11, d11, th10(i));
+A12 = dh(A_12, alpha12, d12, th11(i));
+A13 = dh(A_13, alpha13, d13, th12(i));
+A14 = dh(A_14, alpha14, d14, 0);
+
+% full homogeneuos transfoms
+% 
 HT_14 = A1*A2*A3*A4*A5*A6*A7*A8*A9*A10*A11*A12*A13*A14; %entire transform
 
 HT_13 = A1*A2*A3*A4*A5*A6*A7*A8*A9*A10*A11*A12*A13;
@@ -82,8 +84,7 @@ HT_3 = A1*A2*A3;
 HT_2 = A1*A2;
 HT_1 = A1;  
 
-% %------------------------------------------------------
-% % O vector
+% O vectors
 
 O_0 = [0;0;0];                              % always true
 O_1 = [HT_1(13) ; HT_1(14) ; HT_1(15)];
@@ -101,8 +102,7 @@ O_12 = [HT_12(13) ; HT_12(14) ; HT_12(15)];
 O_13 = [HT_13(13) ; HT_13(14) ; HT_13(15)];
 O_14 = [HT_14(13) ; HT_14(14) ; HT_14(15)];
 
-% %----------------------------------------------------------
-% % Z vector
+%Z vector
                            
 Z_0 = [0;0;1];                              % always true   
 Z_1 = [HT_1(9) ; HT_1(10) ; HT_1(11)]; 
@@ -120,8 +120,6 @@ Z_12 = [HT_12(9) ; HT_12(10) ; HT_12(11)];
 Z_13 = [HT_13(9) ; HT_13(10) ; HT_13(11)]; 
 Z_14 = [HT_14(9) ; HT_14(10) ; HT_14(11)];
 
-% %------------------------------------------------------------
-
 % O subtraction
 O_sub1 = O_14 - O_0;              
 O_sub2 = O_14 - O_1;              
@@ -138,9 +136,7 @@ O_sub12 = O_14 - O_11;
 O_sub13 = O_14 - O_12; 
 O_sub14 = O_14 - O_13; 
 
-% %-----------------------------------------------------------------
 % Jacobian structure
-
 % J cross product
 J_top1 = cross(Z_0,O_sub1);
 J_top2 = cross(Z_1,O_sub2);
@@ -157,7 +153,7 @@ J_top12 = cross(Z_11,O_sub12);
 J_top13 = cross(Z_12,O_sub13);
 J_top14 = cross(Z_13,O_sub14);
 
-% J individual full columns
+% jacobian individual colmns
 J_colmn1 = [J_top1;Z_0];  
 J_colmn2 = [J_top2;Z_1];
 J_colmn3 = [J_top3;Z_2];
@@ -172,19 +168,27 @@ J_colmn11 = [J_top11;Z_10];
 J_colmn12 = [J_top12;Z_11];
 J_colmn13 = [J_top13;Z_12];
 J_colmn14 = [J_top14;Z_13];
-% 
-J_Part1 = [J_colmn1 J_colmn2 J_colmn3 J_colmn4 J_colmn5 J_colmn6 J_colmn7] 
-J_Part2 = [J_colmn8 J_colmn9 J_colmn10 J_colmn11 J_colmn12 J_colmn13 J_colmn14]
-%         
-%----------------------------------------------------------------
-% singularity started but not completed
 
-% J_11 = [J_top1 J_top2 J_top3];
-% J1_11 = [J_top1(1) J_top2(1) ; J_top1(2) J_top2(2)];
-% J2_11 = [J_top2(1) J_top3(1) ; J_top2(2) J_top3(2)];
-% J_det = simplify(det(J2_11));
+%final velocity equations of motion
 
+J = simplify([J_colmn1 J_colmn2 J_colmn3 J_colmn4 J_colmn5 J_colmn6 J_colmn7 ...
+    J_colmn8 J_colmn9 J_colmn10 J_colmn11 J_colmn12 J_colmn13 J_colmn14]);
+
+dot_q = [0; dt1(i); dt2(i); dt3(i); dt4(i); dt5(i); dt6(i); ...
+    dt7(i); dt8(i); dt9(i); dt10(i); dt11(i); dt12(i); 0];
+
+%end effector velocity
+vel = simplify(J*dot_q)
 end
+
+
+% 
+% % J_11 = [J_top1 J_top2 J_top3];
+% % J1_11 = [J_top1(1) J_top2(1) ; J_top1(2) J_top2(2)];
+% % J2_11 = [J_top2(1) J_top3(1) ; J_top2(2) J_top3(2)];
+% % J_det = simplify(det(J2_11));
+% 
+% % end
 
 function [dhMatrix] = dh(a,alpha,d,theta)
 
